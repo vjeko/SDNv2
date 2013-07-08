@@ -48,8 +48,8 @@ extern "C" void learn(struct rte_mbuf *m, unsigned portid) {
   const uint64_t src_addr_int = src_addr_union.as_int;
   if (src_addr_int == L2_BROADCAST) return;
 
-	auto query = l2_addr_map_.find(src_addr_int);
-	if (query == l2_addr_map_.end()) {
+  auto query = l2_addr_map_.find(src_addr_int);
+  if (query == l2_addr_map_.end()) {
     query = l2_addr_map_.insert(std::make_pair(src_addr_int, portid)).first;
     const string host = print_ether_addr(ether->s_addr);
     RTE_LOG(INFO, LIB_SWITCH, "Discovered %s at port %d\n", host.c_str(), portid);
