@@ -50,7 +50,7 @@ extern "C" void learn(struct rte_mbuf *m, unsigned portid) {
 
 	auto query = l2_addr_map_.find(src_addr_int);
 	if (query == l2_addr_map_.end()) {
-		query = l2_addr_map_.insert(std::make_pair(src_addr_int, portid)).first;
+    query = l2_addr_map_.insert(std::make_pair(src_addr_int, portid)).first;
     const string host = print_ether_addr(ether->s_addr);
     RTE_LOG(INFO, LIB_SWITCH, "Discovered %s at port %d\n", host.c_str(), portid);
 	}
@@ -59,8 +59,7 @@ extern "C" void learn(struct rte_mbuf *m, unsigned portid) {
 
 
 
-extern "C" uint32_t l2_switch(struct rte_mbuf *m, uint32_t portid) {
-  learn(m, portid);
+extern "C" unsigned decide(struct rte_mbuf *m) {
 
   const ether_hdr* ether = (ether_hdr*) m->pkt.data;
 
@@ -79,4 +78,11 @@ extern "C" uint32_t l2_switch(struct rte_mbuf *m, uint32_t portid) {
   }
 
   return query->second;
+}
+
+
+
+extern "C" uint32_t l2_switch(struct rte_mbuf *m, uint32_t portid) {
+  learn(m, portid);
+  return decide(m);
 }
