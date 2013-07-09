@@ -74,7 +74,7 @@
 #include <rte_mbuf.h>
 
 #include "defs.h"
-#include "io.h"
+#include "lib_io/io.h"
 #include "parse.h"
 #include "globals.h"
 

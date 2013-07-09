@@ -1,0 +1,28 @@
+Instructions:
+
+1) Set the environmental variable RTE_SDK such that it points to the root 
+   directory of the DPDK folder:
+
+   export RTE_SDK=$HOME/dev/dpdk/DPDK
+
+2) Cd into RTE_SDK in order to build and the framework by instantiating:
+   
+   tools/setup.sh
+
+3) Choose options 3, 5, 6 and 8.
+
+4) Cd intro into sdn-v2 subdirectory and configure CMake.
+
+   cd sdn-v2 && cmake .
+
+5) Build all dependencies:
+
+   make all
+
+6) Build a sample application:
+
+   make learning-switch
+
+7) Run the sample application:
+
+   cd learning-switch && ./build/learning-switch -c 0xff -n 2 -- -p 0xff
