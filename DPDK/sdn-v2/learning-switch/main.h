@@ -74,11 +74,12 @@
 #include <rte_mbuf.h>
 
 #include "defs.h"
-#include "io.h"
-#include "parse.h"
 #include "globals.h"
 
+#include "lib_io/io.h"
+#include "lib_parse/parse.h"
 #include "lib_module/module.h"
+#include "lib_config/config.h"
 
 #ifndef _MAIN_H_
 #define _MAIN_H_

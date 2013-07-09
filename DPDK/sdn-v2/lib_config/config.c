@@ -1,12 +1,17 @@
 
+#include <rte_config.h>
 #include <rte_cycles.h>
-
-#include <stdio.h>
-#include <string.h>
+#include <rte_mbuf.h>
+#include <rte_ether.h>
+#include <rte_ethdev.h>
 
 #include "config.h"
 #include "globals.h"
 #include "defs.h"
+
+#include <getopt.h>
+#include <stdio.h>
+#include <string.h>
 
 void init_eal(void) {
 

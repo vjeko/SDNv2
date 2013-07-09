@@ -16,7 +16,7 @@
 #include <rte_log.h>
 
 #include <map>
-#include "../defs.h"
+#include <defs.h>
 
 using std::string;
 
