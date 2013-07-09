@@ -1,7 +1,13 @@
+#include <rte_config.h>
+#include <rte_mbuf.h>
+#include <rte_ether.h>
+#include <rte_ethdev.h>
 
 #include "stats.h"
-#include "defs.h"
 #include "globals.h"
+#include "defs.h"
+
+#include <getopt.h>
 
 void print_stats(void) {
   uint64_t total_packets_dropped, total_packets_tx, total_packets_rx;

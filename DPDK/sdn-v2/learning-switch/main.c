@@ -33,8 +33,6 @@
  */
 
 #include "main.h"
-#include "config.h"
-
 
 inline void pkt_process(
     struct rte_mbuf *m,

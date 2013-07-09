@@ -32,12 +32,7 @@
  *
  */
 
-
-#include "defs.h"
-#include "globals.h"
 #include "io.h"
-
-#include <stdio.h>
 
 
 /* Send burst of packets on an output interface */
@@ -117,7 +112,7 @@ inline void pkt_send_single(
 
 
 
-inline void pkt_flood(
+void pkt_flood(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 

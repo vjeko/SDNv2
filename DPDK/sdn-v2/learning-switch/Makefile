@@ -43,9 +43,10 @@ include $(RTE_SDK)/mk/rte.vars.mk
 APP = learning-switch
 
 # all source are stored in SRCS-y
-SRCS-y := main.c parse.c globals.c io.c stats.c config.c
+SRCS-y := main.c globals.c
 
 CFLAGS += -O3
 CFLAGS += $(WERROR_FLAGS)
+#CFLAGS += ${EXTRA_CFLAGS}
 
 include $(RTE_SDK)/mk/rte.extapp.mk

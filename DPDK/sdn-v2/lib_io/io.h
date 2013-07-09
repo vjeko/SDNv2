@@ -8,7 +8,14 @@
 #ifndef IO_H_
 #define IO_H_
 
+#include <rte_config.h>
+#include <rte_mbuf.h>
+
+#include <stdio.h>
 #include <stdint.h>
+
+#include <defs.h>
+#include <globals.h>
 
 void send_burst(
     struct lcore_queue_conf *qconf,
@@ -23,7 +30,7 @@ inline void pkt_send_single(
     struct lcore_queue_conf *qconf,
     uint8_t port);
 
-inline void pkt_flood(
+void pkt_flood(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf);
 
