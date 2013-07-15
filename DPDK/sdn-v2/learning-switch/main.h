@@ -93,7 +93,7 @@ int MAIN(int argc, char **argv);
 
 void main_loop(void);
 
-inline void pkt_process(
+inline void start_pipeline(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf);
 

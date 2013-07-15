@@ -20,6 +20,7 @@
 
 using std::string;
 
+typedef uint32_t port_t;
 static std::map<uint64_t, size_t> l2_addr_map_;
 
 
@@ -38,8 +39,12 @@ std::string print_ether_addr(ether_addr addr) {
 }
 
 
-extern "C" void learn(struct rte_mbuf *m, unsigned portid) {
 
+extern "C" void component_learn(
+    struct rte_mbuf *m,
+    struct lcore_queue_conf *qconf) {
+
+  const uint32_t portid = m->pkt.in_port;
   const ether_hdr* ether = (ether_hdr*) m->pkt.data;
 
   ether_addr_union src_addr_union;
@@ -59,7 +64,9 @@ extern "C" void learn(struct rte_mbuf *m, unsigned portid) {
 
 
 
-extern "C" unsigned decide(struct rte_mbuf *m) {
+extern "C" uint32_t find(
+    struct rte_mbuf *m,
+    struct lcore_queue_conf *qconf) {
 
   const ether_hdr* ether = (ether_hdr*) m->pkt.data;
 
@@ -74,7 +81,7 @@ extern "C" unsigned decide(struct rte_mbuf *m) {
   auto query = l2_addr_map_.find(dst_addr_int);
   if (query == l2_addr_map_.end()) {
     const string host = print_ether_addr(ether->d_addr);
-    RTE_LOG(INFO, LIB_SWITCH, "Unable to locate %sn", host.c_str());
+    RTE_LOG(INFO, LIB_SWITCH, "Unable to locate %s\n", host.c_str());
   }
 
   return query->second;
@@ -82,7 +89,13 @@ extern "C" unsigned decide(struct rte_mbuf *m) {
 
 
 
-extern "C" uint32_t l2_switch(struct rte_mbuf *m, uint32_t portid) {
-  learn(m, portid);
-  return decide(m);
+extern "C" void component_route(
+    struct rte_mbuf *m,
+    struct lcore_queue_conf *qconf) {
+
+  uint32_t output_port = find(m, qconf);
+
+  rte_pktmbuf_prepend(m, sizeof(port_t));
+  port_t* port = (port_t*) m->pkt.data;
+  *port = output_port;
 }

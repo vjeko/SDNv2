@@ -11,6 +11,9 @@
 #include <rte_config.h>
 #include <rte_mbuf.h>
 
-extern uint32_t l2_switch(struct rte_mbuf *m, unsigned portid);
+extern void component_learn(struct rte_mbuf *m, struct lcore_queue_conf *qconf);
+extern void component_route(struct rte_mbuf *m, struct lcore_queue_conf *qconf);
+extern uint32_t find(struct rte_mbuf *m, struct lcore_queue_conf *qconf);
+
 
 #endif /* MODULE_H_ */

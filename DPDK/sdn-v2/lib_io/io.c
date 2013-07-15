@@ -132,3 +132,21 @@ void pkt_flood(
         rte_pktmbuf_free(m);
   }
 }
+
+
+void component_output(
+    struct rte_mbuf *m,
+    struct lcore_queue_conf *qconf) {
+
+  const uint32_t output_port = *( (uint32_t*) m->pkt.data );
+  rte_pktmbuf_adj(m, sizeof(uint32_t));
+
+  if (output_port == FLOOD_PORT) {
+    RTE_LOG(INFO, SWITCH, "Flooding...\n");
+    pkt_flood(m, qconf);
+  } else if (output_port == DROP_PACKET) {
+    rte_pktmbuf_free(m);
+  } else {
+    pkt_send_single(m, qconf, output_port);
+  }
+}

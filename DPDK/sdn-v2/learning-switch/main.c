@@ -36,20 +36,13 @@
 #include "config.h"
 
 
-inline void pkt_process(
+inline void start_pipeline(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
-  uint32_t port = l2_switch(m, m->pkt.in_port);
-
-  if (port == FLOOD_PORT) {
-    RTE_LOG(INFO, SWITCH, "Flooding...\n");
-    pkt_flood(m, qconf);
-  } else if (port == DROP_PACKET) {
-    rte_pktmbuf_free(m);
-  } else {
-    pkt_send_single(m, qconf, port);
-  }
+  component_learn(m, qconf);
+  component_route(m, qconf);
+  component_output(m, qconf);
 
 }
 
@@ -58,30 +51,29 @@ inline void pkt_process(
 void main_loop(void) {
   struct rte_mbuf *pkts_burst[MAX_PKT_BURST];
   struct rte_mbuf *m;
-  struct lcore_queue_conf *qconf;
 
-  uint64_t prev_tsc = 0;
-  uint64_t diff_tsc, cur_tsc, timer_tsc;
-
-  unsigned lcore_id;
   unsigned i, j, portid, nb_rx;
 
-  timer_tsc = 0;
-
-  lcore_id = rte_lcore_id();
-  qconf = &lcore_queue_conf[lcore_id];
+  // Return the ID of the execution unit we are running on.
+  unsigned lcore_id = rte_lcore_id();
+  struct lcore_queue_conf* qconf = &lcore_queue_conf[lcore_id];
 
   if (qconf->n_rx_queue == 0) {
     RTE_LOG(INFO, SWITCH, "lcore %u has nothing to do\n", lcore_id);
     while(1);
   }
 
-  RTE_LOG(INFO, SWITCH, "entering main loop on lcore %u\n", lcore_id);
+  RTE_LOG(INFO, SWITCH, "Entering main loop on lcore %u\n", lcore_id);
 
   for (i = 0; i < qconf->n_rx_queue; i++) {
     portid = qconf->rx_queue_list[i];
     RTE_LOG(INFO, SWITCH, "Binded lcoreid %u <-> portid %u\n", lcore_id, portid);
   }
+
+
+  uint64_t prev_tsc, cur_tsc, diff_tsc, timer_tsc;
+  timer_tsc = 0;
+  prev_tsc = 0;
 
   while (1) {
 
@@ -91,6 +83,9 @@ void main_loop(void) {
      * TX burst queue drain
      */
     diff_tsc = cur_tsc - prev_tsc;
+
+    portid = qconf->rx_queue_list[0];
+
     if (unlikely(diff_tsc > BURST_TX_DRAIN)) {
 
       for (portid = 0; portid < MAX_PORTS; portid++) {
@@ -137,9 +132,10 @@ void main_loop(void) {
       for (j = 0; j < nb_rx; j++) {
         m = pkts_burst[j];
         rte_prefetch0(rte_pktmbuf_mtod(m, void *));
-        pkt_process(m, qconf);
+        start_pipeline(m, qconf);
       }
     }
+
   }
 }
 
