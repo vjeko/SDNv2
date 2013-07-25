@@ -33,7 +33,7 @@
  */
 
 #include "main.h"
-#include "config.h"
+#include "setup.h"
 
 #include "lib_module/module.h"
 

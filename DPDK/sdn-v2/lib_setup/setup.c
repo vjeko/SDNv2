@@ -5,7 +5,7 @@
 #include <rte_ether.h>
 #include <rte_ethdev.h>
 
-#include "config.h"
+#include "setup.h"
 #include "globals.h"
 #include "defs.h"
 

@@ -15,5 +15,5 @@ include_directories ($ENV{RTE_SDK}/sdn-v2/learning-switch)
 add_library(
   setup
   SHARED
-  config.c
+  setup.c
 )
