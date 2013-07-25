@@ -134,7 +134,7 @@ void pkt_flood(
 }
 
 
-void component_output(
+int component_output(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -149,4 +149,6 @@ void component_output(
   } else {
     pkt_send_single(m, qconf, output_port);
   }
+
+  return 0;
 }

@@ -40,7 +40,7 @@ std::string print_ether_addr(ether_addr addr) {
 
 
 
-extern "C" void component_learn(
+extern "C" int component_learn(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -51,7 +51,7 @@ extern "C" void component_learn(
   src_addr_union.as_addr = ether->s_addr;
 
   const uint64_t src_addr_int = src_addr_union.as_int;
-  if (src_addr_int == L2_BROADCAST) return;
+  if (src_addr_int == L2_BROADCAST) return 0;
 
   auto query = l2_addr_map_.find(src_addr_int);
   if (query == l2_addr_map_.end()) {
@@ -60,6 +60,7 @@ extern "C" void component_learn(
     RTE_LOG(INFO, LIB_SWITCH, "Discovered %s at port %d\n", host.c_str(), portid);
   }
 
+  return 0;
 }
 
 
@@ -89,7 +90,7 @@ extern "C" uint32_t find(
 
 
 
-extern "C" void component_route(
+extern "C" int component_route(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -98,4 +99,6 @@ extern "C" void component_route(
   rte_pktmbuf_prepend(m, sizeof(port_t));
   port_t* port = (port_t*) m->pkt.data;
   *port = output_port;
+
+  return 0;
 }

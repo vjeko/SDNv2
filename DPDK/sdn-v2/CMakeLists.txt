@@ -7,9 +7,10 @@ set(ALL_LIBS
   $ENV{RTE_SDK}/sdn-v2
   $ENV{RTE_SDK}/sdn-v2/lib_io 
   $ENV{RTE_SDK}/sdn-v2/lib_parse
-  $ENV{RTE_SDK}/sdn-v2/lib_config
+  $ENV{RTE_SDK}/sdn-v2/lib_setup
   $ENV{RTE_SDK}/sdn-v2/lib_stats
   $ENV{RTE_SDK}/sdn-v2/lib_module
+  $ENV{RTE_SDK}/sdn-v2/lib_ethane
   $ENV{RTE_SDK}/sdn-v2/learning-switch
   )
 
@@ -22,13 +23,14 @@ foreach(PATH ${ALL_LIBS})
   set(EXTRA_LDFLAGS "${EXTRA_LDFLAGS} -rpath ${PATH}")
 endforeach(PATH)
 
-set(EXTRA_LDFLAGS "${EXTRA_LDFLAGS} -lio -lparse -lconfig -lmodule -lstats")
+set(EXTRA_LDFLAGS "${EXTRA_LDFLAGS} -lio -lparse -lsetup -lmodule -lstats -lethane")
 set(EXTRA_CFLAGS "${EXTRA_CFLAGS} -I$ENV{RTE_SDK}/x86_64-default-linuxapp-gcc/include")
 
 add_subdirectory(lib_io)
 add_subdirectory(lib_parse)
-add_subdirectory(lib_config)
+add_subdirectory(lib_setup)
 add_subdirectory(lib_module)
+add_subdirectory(lib_ethane)
 add_subdirectory(lib_stats)
 
 ADD_CUSTOM_TARGET(learning-switch

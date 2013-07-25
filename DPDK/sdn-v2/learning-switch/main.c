@@ -35,22 +35,34 @@
 #include "main.h"
 #include "config.h"
 
+#include "lib_module/module.h"
+
+extern int component_route(struct rte_mbuf *m, struct lcore_queue_conf *qconf);
+extern int component_learn(struct rte_mbuf *m, struct lcore_queue_conf *qconf);
+
+
 
 inline void start_pipeline(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
-  component_learn(m, qconf);
-  component_route(m, qconf);
-  component_output(m, qconf);
+  if(component_learn(m, qconf)) return;
 
+  if(component_ethane_class(m, qconf)) return;
+  if(component_ethane_action(m, qconf)) return;
+
+  if(component_route(m, qconf)) return;
+  if(component_output(m, qconf)) return;
 }
+
 
 
 /* main processing loop */
 void main_loop(void) {
   struct rte_mbuf *pkts_burst[MAX_PKT_BURST];
   struct rte_mbuf *m;
+
+  component_ethane_init();
 
   unsigned i, j, portid, nb_rx;
 

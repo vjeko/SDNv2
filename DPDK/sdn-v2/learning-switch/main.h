@@ -78,6 +78,7 @@
 #include "parse.h"
 #include "globals.h"
 
+#include "lib_ethane/ethane.h"
 #include "lib_module/module.h"
 
 #ifndef _MAIN_H_

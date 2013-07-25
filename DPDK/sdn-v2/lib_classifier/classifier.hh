@@ -90,6 +90,7 @@ struct Classifier<Size, Offset, Tail...> {
 
     auto it = map_.find(field);
     if (it == map_.end()) {
+      bitset &= my_bitset;
       return;
     }
 
@@ -110,8 +111,10 @@ struct Classifier<Size, Offset, Tail...> {
     bitset.reset().flip();
     _find(bitset, packet);
 
-    for(auto i = 0; i < bitset.size(); i++) {
-      if(bitset[i]) return &action_table_[i];
+    for(auto i = 0; i < rule_counter_; i++) {
+      if(bitset[i]) {
+        return &action_table_[i];
+      }
     }
 
     return NULL;
@@ -228,6 +231,7 @@ struct Classifier<Size, Offset> {
 
     auto it = map_.find(field);
     if (it == map_.end()) {
+      bitset &= my_bitset;
       return;
     }
 

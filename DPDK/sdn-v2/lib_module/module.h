@@ -11,8 +11,8 @@
 #include <rte_config.h>
 #include <rte_mbuf.h>
 
-extern void component_learn(struct rte_mbuf *m, struct lcore_queue_conf *qconf);
-extern void component_route(struct rte_mbuf *m, struct lcore_queue_conf *qconf);
+extern int component_learn(struct rte_mbuf *m, struct lcore_queue_conf *qconf);
+extern int component_route(struct rte_mbuf *m, struct lcore_queue_conf *qconf);
 extern uint32_t find(struct rte_mbuf *m, struct lcore_queue_conf *qconf);
 
 

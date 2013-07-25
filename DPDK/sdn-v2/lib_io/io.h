@@ -34,7 +34,7 @@ void pkt_flood(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf);
 
-void component_output(
+int component_output(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf);
 
