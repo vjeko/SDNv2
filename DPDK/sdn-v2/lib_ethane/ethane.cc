@@ -53,9 +53,13 @@ const size_t dst_offset = sizeof(ether_hdr) + offsetof(ipv4_hdr, dst_addr);
 const size_t src_size = sizeof ipv4_hdr().src_addr;
 const size_t dst_size = sizeof ipv4_hdr().dst_addr;
 
+typedef dpdk::Match<src_size, src_offset> SrcMatch;
+typedef dpdk::Match<dst_size, dst_offset> DstMatch;
+
 dpdk::Classifier<
-  src_size, src_offset,
-  dst_size, dst_offset> classifier;
+    dpdk::MatchExact<SrcMatch>,
+    dpdk::MatchExact<DstMatch>
+  > classifier;
 
 
 
