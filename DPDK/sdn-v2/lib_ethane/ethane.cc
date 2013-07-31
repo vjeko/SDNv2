@@ -76,7 +76,7 @@ extern int action_classify_forbidden(
 
 
 
-extern "C" void component_ethane_init() {
+void component_ethane_init() {
 
   union AddressUnion {
     array<uint8_t, sizeof(uint32_t)> array_;
@@ -94,7 +94,7 @@ extern "C" void component_ethane_init() {
 
 
 
-extern "C" int component_ethane_class(
+int component_ethane_class(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -116,7 +116,7 @@ extern "C" int component_ethane_class(
 
 
 
-extern "C" int component_ethane_action(
+int component_ethane_action(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 

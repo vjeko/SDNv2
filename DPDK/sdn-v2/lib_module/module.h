@@ -8,6 +8,7 @@
 #ifndef MODULE_H_
 #define MODULE_H_
 
+#include "defs.h"
 #include <rte_config.h>
 #include <rte_mbuf.h>
 

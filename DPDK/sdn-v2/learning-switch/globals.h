@@ -8,6 +8,7 @@
 #ifndef GLOBALS_H_
 #define GLOBALS_H_
 
+#include <rte_config.h>
 #include "defs.h"
 
 extern uint16_t nb_rxd;

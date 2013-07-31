@@ -40,7 +40,7 @@ std::string print_ether_addr(ether_addr addr) {
 
 
 
-extern "C" int component_learn(
+int component_learn(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -65,7 +65,7 @@ extern "C" int component_learn(
 
 
 
-extern "C" uint32_t find(
+uint32_t find(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -90,7 +90,7 @@ extern "C" uint32_t find(
 
 
 
-extern "C" int component_route(
+int component_route(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 

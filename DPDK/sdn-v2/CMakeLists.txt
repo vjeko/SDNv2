@@ -11,6 +11,7 @@ set(ALL_LIBS
   $ENV{RTE_SDK}/sdn-v2/lib_stats
   $ENV{RTE_SDK}/sdn-v2/lib_module
   $ENV{RTE_SDK}/sdn-v2/lib_ethane
+  $ENV{RTE_SDK}/sdn-v2/lib_pipeline
   $ENV{RTE_SDK}/sdn-v2/learning-switch
   )
 
@@ -23,7 +24,8 @@ foreach(PATH ${ALL_LIBS})
   set(EXTRA_LDFLAGS "${EXTRA_LDFLAGS} -rpath ${PATH}")
 endforeach(PATH)
 
-set(EXTRA_LDFLAGS "${EXTRA_LDFLAGS} -lio -lparse -lsetup -lmodule -lstats -lethane")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fPIC") 
+set(EXTRA_LDFLAGS "${EXTRA_LDFLAGS} -lio -lparse -lsetup -lmodule -lstats -lethane -lpipeline")
 set(EXTRA_CFLAGS "${EXTRA_CFLAGS} -I$ENV{RTE_SDK}/x86_64-default-linuxapp-gcc/include")
 
 add_subdirectory(lib_io)
@@ -32,6 +34,7 @@ add_subdirectory(lib_setup)
 add_subdirectory(lib_module)
 add_subdirectory(lib_ethane)
 add_subdirectory(lib_stats)
+add_subdirectory(lib_pipeline)
 
 ADD_CUSTOM_TARGET(learning-switch
   export EXTRA_LDFLAGS=${EXTRA_LDFLAGS} && 

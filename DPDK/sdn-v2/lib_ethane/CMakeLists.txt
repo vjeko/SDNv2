@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
 
-list( APPEND CMAKE_CXX_FLAGS "-std=gnu++11")
-
 include_directories ($ENV{RTE_SDK}/lib/librte_mbuf)
 include_directories ($ENV{RTE_SDK}/lib/librte_ether)
 include_directories ($ENV{RTE_SDK}/lib/librte_mempool)
