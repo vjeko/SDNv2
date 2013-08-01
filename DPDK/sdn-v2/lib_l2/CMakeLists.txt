@@ -13,7 +13,7 @@ include_directories ($ENV{RTE_SDK}/x86_64-default-linuxapp-gcc/include)
 include_directories ($ENV{RTE_SDK}/sdn-v2/learning-switch)
 
 add_library(
-  module
+  l2
   SHARED
-  module.cc
+  l2.cc
 )

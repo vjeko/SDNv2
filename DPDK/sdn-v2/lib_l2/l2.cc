@@ -10,7 +10,7 @@
 
 #include <map>
 #include <defs.h>
-#include "module.h"
+#include "l2.hh"
 
 namespace dpdk {
 

@@ -1,8 +1,8 @@
 
 #include "globals.h"
 
-#include <lib_module/module.h>
 #include <lib_ethane/ethane.h>
+#include <lib_l2/l2.hh>
 #include <lib_io/io.hh>
 
 
