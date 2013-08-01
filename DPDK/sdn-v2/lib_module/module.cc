@@ -1,10 +1,3 @@
-/*
- * module.cpp
- *
- *  Created on: Jul 3, 2013
- *      Author: vjeko
- */
-
 #include <iostream>
 
 #define __STDC_FORMAT_MACROS
@@ -17,14 +10,11 @@
 
 #include <map>
 #include <defs.h>
+#include "module.h"
 
-using std::string;
+namespace dpdk {
 
-typedef uint32_t port_t;
-static std::map<uint64_t, size_t> l2_addr_map_;
-
-
-std::string print_ether_addr(ether_addr addr) {
+std::string L2Switch::print_ether_addr(ether_addr addr) {
 
   char buffer[32];
   sprintf(buffer, "%02X:%02X:%02X:%02X:%02X:%02X",
@@ -40,7 +30,7 @@ std::string print_ether_addr(ether_addr addr) {
 
 
 
-int component_learn(
+int L2Switch::component_learn(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -65,7 +55,7 @@ int component_learn(
 
 
 
-uint32_t find(
+uint32_t L2Switch::find(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -90,7 +80,7 @@ uint32_t find(
 
 
 
-int component_route(
+int L2Switch::component_route(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -101,4 +91,7 @@ int component_route(
   *port = output_port;
 
   return 0;
+}
+
+
 }

@@ -12,6 +12,12 @@
 #include <rte_ether.h>
 #include <rte_ethdev.h>
 
+
+
+#ifdef __cplusplus
+#include <limits>
+#endif
+
 #define RTE_LOGTYPE_SWITCH RTE_LOGTYPE_USER1
 #define RTE_LOGTYPE_LIB_SWITCH RTE_LOGTYPE_USER1
 
@@ -73,9 +79,19 @@
 #define TIMER_MILLISECOND 20000000ULL /* around 1ms at 2 Ghz */
 #define MAX_TIMER_PERIOD 86400 /* 1 day max */
 
+#ifdef __cplusplus
+
+#define L2_BROADCAST 0xFFFFFFFFFFFF
+#define FLOOD_PORT   std::numeric_limits<uint32_t>::max()
+#define DROP_PACKET  FLOOD_PORT - 1
+
+#else
+
 #define L2_BROADCAST 0xFFFFFFFFFFFF
 #define FLOOD_PORT   UINT32_MAX
 #define DROP_PACKET  UINT32_MAX - 1
+
+#endif
 
 struct mbuf_table {
   unsigned len;

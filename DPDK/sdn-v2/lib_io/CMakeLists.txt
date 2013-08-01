@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(libio)
 
-set(CMAKE_C_FLAGS "-Wall -Wno-long-long")
-
 include_directories ($ENV{RTE_SDK}lib/librte_mbuf)
 include_directories ($ENV{RTE_SDK}lib/librte_ether)
 include_directories ($ENV{RTE_SDK}/lib/librte_mempool)
@@ -16,5 +14,5 @@ include_directories ($ENV{RTE_SDK}/sdn-v2/learning-switch)
 add_library(
   io
   SHARED
-  io.c
+  io.cc
 )

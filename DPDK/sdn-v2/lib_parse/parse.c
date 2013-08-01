@@ -36,8 +36,10 @@ int parse_portmask(const char *portmask) {
   return pm;
 }
 
-int parse_timer_period(const char *q_arg)
-{
+
+
+int parse_timer_period(const char *q_arg) {
+
   char *end = NULL;
   int n;
 

@@ -74,12 +74,8 @@
 #include <rte_mbuf.h>
 
 #include "defs.h"
-#include "lib_io/io.h"
 #include "parse.h"
 #include "globals.h"
-
-#include "lib_ethane/ethane.h"
-#include "lib_module/module.h"
 
 #ifndef _MAIN_H_
 #define _MAIN_H_
@@ -93,9 +89,5 @@
 int MAIN(int argc, char **argv);
 
 void main_loop(void);
-
-inline void start_pipeline(
-    struct rte_mbuf *m,
-    struct lcore_queue_conf *qconf);
 
 #endif /* _MAIN_H_ */

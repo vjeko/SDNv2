@@ -18,6 +18,8 @@ set(ALL_LIBS
 set(EXTRA_CFLAGS "")
 set(EXTRA_LDFLAGS "")
 
+set(CMAKE_C_FLAGS "-Wall -Wno-long-long")
+
 foreach(PATH ${ALL_LIBS})
   set(EXTRA_CFLAGS "${EXTRA_CFLAGS} -I${PATH}")
   set(EXTRA_LDFLAGS "${EXTRA_LDFLAGS} -L${PATH}")

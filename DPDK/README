@@ -25,5 +25,5 @@ Instructions:
 
 7) Run the sample application:
 
-   cd learning-switch && ./build/learning-switch -c 0xff -n 2 -- -p 0xff
+   cd learning-switch && ./build/learning-switch -c 0x11 -n 2 -- -p 0xff
 

@@ -66,7 +66,6 @@ struct MatchRange {
     }
 
     for(; it != interval_.end(); ++it) {
-      std::cout << "Rule # " << it->second << std::endl;
       my_bitset.set(it->second, true);
     }
 

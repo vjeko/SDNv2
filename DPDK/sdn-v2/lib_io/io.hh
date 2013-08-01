@@ -17,25 +17,31 @@
 #include <defs.h>
 #include <globals.h>
 
-void send_burst(
+
+class IO {
+public:
+
+  static void send_burst(
     struct lcore_queue_conf *qconf,
     uint8_t port);
 
-inline struct rte_mbuf * pkt_duplicate(
+  static struct rte_mbuf * pkt_duplicate(
     struct rte_mbuf *pkt,
     int use_clone);
 
-inline void pkt_send_single(
+  static void pkt_send_single(
     struct rte_mbuf *pkt,
     struct lcore_queue_conf *qconf,
     uint8_t port);
 
-void pkt_flood(
+  static void pkt_flood(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf);
 
-extern int component_output(
+  static int component_output(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf);
+  };
+
 
 #endif /* IO_H_ */

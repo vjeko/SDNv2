@@ -36,10 +36,12 @@
 #include "main.h"
 #include "setup.h"
 
-#include "lib_module/module.h"
-#include "lib_ethane/ethane.h"
 #include "lib_pipeline/pipeline.h"
 
+
+extern void send_burst(
+    struct lcore_queue_conf *qconf,
+    uint8_t port);
 
 
 /* main processing loop */
@@ -90,7 +92,7 @@ void main_loop(void) {
         if (qconf->tx_mbufs[portid].len == 0)
           continue;
 
-        send_burst(&lcore_queue_conf[lcore_id], (uint8_t) portid);
+        pipeline_send_burst(&lcore_queue_conf[lcore_id], (uint8_t) portid);
         qconf->tx_mbufs[portid].len = 0;
       }
 

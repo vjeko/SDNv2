@@ -32,11 +32,23 @@
  *
  */
 
-#include "io.h"
+//#include "io.h"
 
+#include "io.hh"
+
+#include <rte_config.h>
+#include <rte_mbuf.h>
+
+#include <stdio.h>
+#include <stdint.h>
+
+#include <defs.h>
+#include <globals.h>
+
+#include <defs.h>
 
 /* Send burst of packets on an output interface */
-void send_burst(
+inline void IO::send_burst(
     struct lcore_queue_conf *qconf,
     uint8_t port) {
 
@@ -59,7 +71,7 @@ void send_burst(
 
 
 
-inline struct rte_mbuf * pkt_duplicate(
+inline struct rte_mbuf * IO::pkt_duplicate(
     struct rte_mbuf *pkt,
     int use_clone) {
 
@@ -96,7 +108,7 @@ inline struct rte_mbuf * pkt_duplicate(
 
 
 
-inline void pkt_send_single(
+inline void IO::pkt_send_single(
     struct rte_mbuf *pkt,
     struct lcore_queue_conf *qconf,
     uint8_t port) {
@@ -112,7 +124,7 @@ inline void pkt_send_single(
 
 
 
-void pkt_flood(
+inline void IO::pkt_flood(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -135,7 +147,7 @@ void pkt_flood(
 
 
 
-int component_output(
+int IO::component_output(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 

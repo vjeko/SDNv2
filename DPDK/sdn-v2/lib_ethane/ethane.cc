@@ -20,63 +20,30 @@
 #include <defs.h>
 #include <endian.h>
 
-#include "../lib_classifier/classifier.hh"
+#include "ethane.h"
+
 
 using std::string;
 using std::array;
 
-enum Action {
-  CLASSIFY = 1
-};
-
-enum Pipeline {
-  CONTINUE = 0,
-  STOP = 1
-};
-
-enum Class {
-  ALLOW,
-  FORBID
-};
+namespace dpdk {
 
 
 
-struct EthaneMetaHeader {
-  uint32_t class_;
-} __attribute__((__packed__));
-
-
-
-const size_t src_offset = sizeof(ether_hdr) + offsetof(ipv4_hdr, src_addr);
-const size_t dst_offset = sizeof(ether_hdr) + offsetof(ipv4_hdr, dst_addr);
-
-const size_t src_size = sizeof ipv4_hdr().src_addr;
-const size_t dst_size = sizeof ipv4_hdr().dst_addr;
-
-typedef dpdk::Match<src_size, src_offset> SrcMatch;
-typedef dpdk::Match<dst_size, dst_offset> DstMatch;
-
-dpdk::Classifier<
-    dpdk::MatchExact<SrcMatch>,
-    dpdk::MatchExact<DstMatch>
-  > classifier;
-
-
-
-extern int action_classify_forbidden(
+int Ethane::action_classify_forbidden(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
   rte_pktmbuf_prepend(m, sizeof(EthaneMetaHeader));
   EthaneMetaHeader* header = (EthaneMetaHeader*) m->pkt.data;
-  header->class_ = Class::FORBID;
+  header->class_ = CLASS::FORBID;
 
-  return Pipeline::CONTINUE;
+  return PIPELINE::CONTINUE;
 }
 
 
 
-void component_ethane_init() {
+void Ethane::component_ethane_init() {
 
   union AddressUnion {
     array<uint8_t, sizeof(uint32_t)> array_;
@@ -87,14 +54,14 @@ void component_ethane_init() {
   src_addr.int_ = be32toh( IPv4(10,10,10,11) );
   dst_addr.int_ = be32toh( IPv4(10,10,10,12) );
 
-  dpdk::Action* action = classifier.add_rule(src_addr.array_, dst_addr.array_);
-  action->type_ = Action::CLASSIFY;
-  action->callback_ = action_classify_forbidden;
+  Action* action = classifier.add_rule(src_addr.array_, dst_addr.array_);
+  action->type_ = ACTION::CLASSIFY;
+  action->callback_ = &Ethane::action_classify_forbidden;
 }
 
 
 
-int component_ethane_class(
+int Ethane::component_ethane_class(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -109,35 +76,37 @@ int component_ethane_class(
 
   rte_pktmbuf_prepend(m, sizeof(EthaneMetaHeader));
   EthaneMetaHeader* header = (EthaneMetaHeader*) m->pkt.data;
-  header->class_ = Class::ALLOW;
+  header->class_ = CLASS::ALLOW;
 
-  return Pipeline::CONTINUE;
+  return PIPELINE::CONTINUE;
 }
 
 
 
-int component_ethane_action(
+int Ethane::component_ethane_action(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
   const EthaneMetaHeader* header = ( (EthaneMetaHeader*) m->pkt.data );
-  if (header->class_ == Class::ALLOW) {
+  if (header->class_ == CLASS::ALLOW) {
 
     rte_pktmbuf_adj(m, sizeof(EthaneMetaHeader));
-    return Pipeline::CONTINUE;
+    return PIPELINE::CONTINUE;
 
-  } else if (header->class_ == Class::FORBID) {
+  } else if (header->class_ == CLASS::FORBID) {
 
     rte_pktmbuf_free(m);
-    return Pipeline::STOP;
+    return PIPELINE::STOP;
 
   } else {
 
     printf("Unknown classification.\n");
     rte_pktmbuf_free(m);
-    return Pipeline::STOP;
+    return PIPELINE::STOP;
 
   }
+
+}
 
 
 }
