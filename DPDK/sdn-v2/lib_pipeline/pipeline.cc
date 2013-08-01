@@ -36,8 +36,8 @@ extern "C" void start_pipeline(
 
   if(l2_switch.component_learn(m, qconf)) return;
 
-  if(ethane.component_ethane_class(m, qconf)) return;
-  if(ethane.component_ethane_action(m, qconf)) return;
+  if(ethane.classify_.component(m, qconf)) return;
+  if(ethane.enforce_.component(m, qconf)) return;
 
   if(l2_switch.component_route(m, qconf)) return;
   if(IO::component_output(m, qconf)) return;

@@ -44,20 +44,46 @@ struct EthaneMetaHeader {
 class Ethane {
 public:
 
+
+  Ethane() : classify_(*this), enforce_(*this) {}
+
   static int action_classify_forbidden(
       struct rte_mbuf *m,
       struct lcore_queue_conf *qconf);
 
   void component_ethane_init(void);
 
-  int component_ethane_class(
-      struct rte_mbuf *m,
-      struct lcore_queue_conf *qconf);
-  int component_ethane_action(
-      struct rte_mbuf *m,
-      struct lcore_queue_conf *qconf);
 
-private:
+
+
+  class Classify {
+  public:
+
+    Classify(Ethane& ethane) : parent_(ethane) {};
+
+    int component(
+        struct rte_mbuf *m,
+        struct lcore_queue_conf *qconf);
+
+    Ethane& parent_;
+  };
+
+
+
+
+  class Enforce {
+  public:
+
+    Enforce(Ethane& ethane) : parent_(ethane) {};
+
+    int component(
+        struct rte_mbuf *m,
+        struct lcore_queue_conf *qconf);
+
+    Ethane& parent_;
+  };
+
+
 
   static const size_t src_offset = sizeof(ether_hdr) + offsetof(ipv4_hdr, src_addr);
   static const size_t dst_offset = sizeof(ether_hdr) + offsetof(ipv4_hdr, dst_addr);
@@ -72,6 +98,9 @@ private:
       dpdk::MatchExact<SrcMatch>,
       dpdk::MatchExact<DstMatch>
     > classifier;
+
+  Classify classify_;
+  Enforce enforce_;
 };
 
 }

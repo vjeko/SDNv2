@@ -61,7 +61,7 @@ void Ethane::component_ethane_init() {
 
 
 
-int Ethane::component_ethane_class(
+int Ethane::Classify::component(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
@@ -71,7 +71,7 @@ int Ethane::component_ethane_class(
 
   //printf("%x -> %x\n", htobe32(ip->src_addr), htobe32(ip->dst_addr));
 
-  dpdk::Action* action = classifier.find(m->pkt.data);
+  dpdk::Action* action = parent_.classifier.find(m->pkt.data);
   if (action) return action->callback_(m, qconf);
 
   rte_pktmbuf_prepend(m, sizeof(EthaneMetaHeader));
@@ -83,7 +83,8 @@ int Ethane::component_ethane_class(
 
 
 
-int Ethane::component_ethane_action(
+
+int Ethane::Enforce::component(
     struct rte_mbuf *m,
     struct lcore_queue_conf *qconf) {
 
